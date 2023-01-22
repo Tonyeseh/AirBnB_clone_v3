@@ -86,8 +86,7 @@ class FileStorage:
         for k, v in self.all(cls).items():
             if v.id == id:
                 return v
-            else:
-                return None
+        return None
 
     def count(self, cls=None):
         """counts all the objects in storage matching a given class

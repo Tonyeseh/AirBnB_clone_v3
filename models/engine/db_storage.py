@@ -89,7 +89,7 @@ class DBStorage:
         for k, v in self.all(cls).items():
             if v.id == id:
                 return v
-            return None
+        return None
 
     def count(self, cls=None):
         """counts the number of objects in storage
