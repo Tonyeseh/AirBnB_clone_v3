@@ -2,7 +2,7 @@
 """ defines routes that contain places string"""
 from api.v1.views import app_views
 from models import storage
-from models.reviews import Review
+from models.review import Review
 from models.place import Place
 from flask import abort, jsonify, request
 
@@ -29,7 +29,7 @@ def reviews(place_id):
         new_review.save()
         return jsonify(new_review.to_dict()), 201
 @app_views.route('/reviews/<review_id>', methods=['GET', 'DELETE', 'PUT'])
-def get_place(review_id):
+def get_review(review_id):
     """displays, delete and updates a specific place object"""
     review = storage.get(Review, review_id)
     if review is None:
