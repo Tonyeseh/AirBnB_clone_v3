@@ -9,12 +9,12 @@ from flask import abort, jsonify, request
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'DELETE'])
 def places(city_id):
     """defines route to add and display all places"""
-    city = storage.get(city_id)
+    city = storage.get(User, city_id)
     if request.method == 'GET':
         places = [place.to_dict() for place in city.places]
         return jsonify(places)
     if request.method == 'POST':
-        place_dict = request.get()
+        place_dict = request.get_json()
         if type(place_dict) != dict:
             return "Not a JSON\n", 400
         if 'user_id' not in place_dict.keys():
@@ -44,7 +44,7 @@ def get_place(place_id):
         new_data = request.get_json()
         if type(new_data) != dict:
             return "Not a JSON", 400
-        for k, v in new_info.items():
+        for k, v in new_data.items():
             if k != 'updated_at' and k != 'created_at' and k != 'id':
                 setattr(place, k, v)
         place.save()
