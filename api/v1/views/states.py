@@ -16,9 +16,9 @@ def states():
         state = request.get_json()
 
         if type(state) != dict:
-            return "Not a JSON\n", 404
+            return "Not a JSON\n", 400
         if 'name' not in state.keys():
-            return "Missing name\n", 404
+            return "Missing name\n", 400
         new_state = State(**state)
         new_state.save()
         return jsonify(new_state.to_dict()), 201
@@ -38,7 +38,7 @@ def get_state(state_id):
     if request.method == 'PUT':
         new_info = request.get_json()
         if type(new_info) != dict:
-            return "Not a JSON", 404
+            return "Not a JSON", 400
         for k, v in new_info.items():
             if k != 'updated_at' and k != 'created_at' and k != 'id':
                 setattr(state, k, v)

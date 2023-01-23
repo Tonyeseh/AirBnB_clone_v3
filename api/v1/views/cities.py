@@ -19,9 +19,9 @@ def state_cities(state_id):
     if request.method == 'POST':
         city_dict = request.get_json()
         if type(city_dict) != dict:
-            return "Not a JSON\n", 404
+            return "Not a JSON\n", 400
         if 'name' not in city_dict.keys():
-            return "Missing name\n", 404
+            return "Missing name\n", 400
         city_dict['state_id'] = state_id
         new_city = City(**city_dict)
         new_city.save()
@@ -42,7 +42,7 @@ def all_cities(city_id):
     if request.method == 'PUT':
         new_info = request.get_json()
         if type(new_info) != dict:
-            return "Not a JSON", 404
+            return "Not a JSON", 400
         for k, v in new_info.items():
             if k != 'updated_at' and k != 'created_at' and k != 'id':
                 setattr(city, k, v)

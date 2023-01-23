@@ -33,3 +33,12 @@ def get_amenity(amenity_id):
         storage.delete(amenity)
         storage.save()
         return jsonify({})
+    if request.method == 'PUT':
+        new_data = request.get_json()
+        if type(new_data) != dict:
+            return "Not a JSON\n", 400
+        for k, v in new_data.items():
+            if k != 'updated_at' and k != 'created_at' and k != 'id':
+                setattr(amenity, k, v)
+        amenity.save()
+        return jsonify(amenity.to_dict())
