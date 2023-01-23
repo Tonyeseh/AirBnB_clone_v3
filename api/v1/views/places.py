@@ -17,10 +17,17 @@ def places(city_id):
         place_dict = request.get()
         if type(place_dict) != dict:
             return "Not a JSON\n", 400
-        city_dict['city_id'] = city_id
-        new_city = Place(**city_dict)
-        new_city.save()
-        return jsonify(new_dict.to_dict()), 201
+        if 'user_id' not in place_dict.keys():
+            return "Missing user_id", 400
+        user = storage.get(User, place_dict.get('user_id', None))
+        if user is None:
+            abort(404)
+        if 'name' not in place_dict.keys():
+            return "Missing name", 400
+        place_dict['city_id'] = city_id
+        new_place = Place(**place_dict)
+        new_place.save()
+        return jsonify(new_place.to_dict()), 201
 @app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_place(place_id):
     """displays, delete and updates a specific place object"""
