@@ -6,6 +6,7 @@ from flask import abort, jsonify, request
 from models import storage
 from models.user import User
 
+
 @app_views.route('/users', methods=['GET', 'POST'])
 def users():
     """displays all users or add new user.. depending on the method"""
@@ -22,7 +23,8 @@ def users():
             return "Missing password\n", 400
         user = User(**user_dict)
         user.save()
-        return(user.to_dict())
+        return jsonify(user.to_dict())
+
 
 @app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'])
 def user(user_id):

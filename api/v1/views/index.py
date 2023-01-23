@@ -2,6 +2,7 @@
 from flask import jsonify
 from api.v1.views import app_views
 
+
 @app_views.route('/status')
 def status():
     """
@@ -9,6 +10,7 @@ def status():
     """
     data = {"status": "OK"}
     return jsonify(data)
+
 
 @app_views.route('/stats')
 def stats():
@@ -22,14 +24,15 @@ def stats():
     from models.state import State
     from models.user import User
     from models import storage
-    
-    classes = {"amenities": Amenity,
-            "cities": City,
-            "places": Place, 
-            "reviews": Review,
-            "states": State,
-            "users": User
-            }
+
+    classes = {
+        "amenities": Amenity,
+        "cities": City,
+        "places": Place,
+        "reviews": Review,
+        "states": State,
+        "users": User
+        }
     class_count = {}
     for key, cls in classes.items():
         if storage.count(cls) is None:

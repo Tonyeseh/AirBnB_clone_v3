@@ -6,6 +6,7 @@ from models.review import Review
 from models.place import Place
 from flask import abort, jsonify, request
 
+
 @app_views.route('/places/<place_id>/reviews', methods=['GET', 'DELETE'])
 def reviews(place_id):
     """defines route to add and display all reviews"""
@@ -28,6 +29,8 @@ def reviews(place_id):
         new_review = Place(**review_dict)
         new_review.save()
         return jsonify(new_review.to_dict()), 201
+
+
 @app_views.route('/reviews/<review_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_review(review_id):
     """displays, delete and updates a specific place object"""
