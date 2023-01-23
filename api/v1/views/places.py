@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+""" defines routes that contain places string"""
+from api.v1.views import app_views
+from models import storage
+from models.city import City
+from models.place import Place
+from flask import abort, jsonify, request
+
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'DELETE'])
+def places(city_id):
+    """defines route to add and display all places"""
+    city = storage.get(city_id)
+    if request.method == 'GET':
+        places = [place.to_dict() for place in city.places]
+        return jsonify(places)
+    if request.method == 'POST':
+        place_dict = request.get()
+        if type(place_dict) != dict:
+            return "Not a JSON\n", 400
+        city_dict['city_id'] = city_id
+        new_city = Place(**city_dict)
+        new_city.save()
+        return jsonify(new_dict.to_dict()), 201
+@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
+def get_place(place_id):
+    """displays, delete and updates a specific place object"""
+    place = storage.get(Place, place_id)
+    if place is None:
+        abort(404)
+    if request.method == 'GET':
+        return jsonify(place.to_dict())
+    if request.method == 'DELETE':
+        storage.delete(place)
+        storage.save()
+        return jsonify({})
+    if request.method == 'PUT':
+        new_data = request.get_json()
+        if type(new_data) != dict:
+            return "Not a JSON", 400
+        for k, v in new_info.items():
+            if k != 'updated_at' and k != 'created_at' and k != 'id':
+                setattr(place, k, v)
+        place.save()
+        return jsonify(place.to_dict())
