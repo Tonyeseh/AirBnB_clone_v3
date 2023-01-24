@@ -10,7 +10,7 @@ from flask import abort, jsonify, request
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'DELETE'])
 def places(city_id):
     """defines route to add and display all places"""
-    city = storage.get(User, city_id)
+    city = storage.get(City, city_id)
     if request.method == 'GET':
         places = [place.to_dict() for place in city.places]
         return jsonify(places)
