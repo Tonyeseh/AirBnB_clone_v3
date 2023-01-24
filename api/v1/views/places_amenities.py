@@ -9,6 +9,7 @@ from models.amenity import Amenity
 from models.place import Place
 from flask import abort, jsonify, request
 
+
 @app_views.route('/places/<place_id>/amenities', methods=['GET'])
 def place_amenity(place_id):
     """get amenities for a place and add amenity to a place"""
@@ -21,7 +22,8 @@ def place_amenity(place_id):
         return jsonify(amenities)
 
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['DELETE', 'POST'])
+@app_views.route('/places/<place_id>/amenities/<amenity_id>',
+                 methods=['DELETE', 'POST'])
 def place_amenities(place_id, amenity_id):
     """deletes and add amenities to a place"""
     place = storage.get(Place, place_id)
