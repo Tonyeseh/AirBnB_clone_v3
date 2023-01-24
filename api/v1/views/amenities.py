@@ -21,7 +21,7 @@ def amenities():
         amenity.save()
         return jsonify(amenity.to_dict())
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_amenity(amenity_id):
     """gets a specific amenity displays, delete or update it"""
     amenity = storage.get(Amenity, amenity_id)
