@@ -20,7 +20,7 @@ def places(city_id):
         return jsonify(places)
     if request.method == 'POST':
         place_dict = request.get_json()
-        if type(place_dict) != dict:
+        if not isinstance(place_dict, dict):
             return "Not a JSON\n", 400
         if 'user_id' not in place_dict.keys():
             return "Missing user_id", 400
@@ -49,7 +49,7 @@ def get_place(place_id):
         return jsonify({})
     if request.method == 'PUT':
         new_data = request.get_json()
-        if type(new_data) != dict:
+        if not isinstance(new_data, dict):
             return "Not a JSON", 400
         for k, v in new_data.items():
             if k != 'updated_at' and k != 'created_at' and k != 'id':
@@ -76,13 +76,18 @@ def get_places(states, cities):
 
 @app_views.route('/places_search', methods=['POST'])
 def places_search():
-    """get places depending on the state, cities and amenities passed as JSON"""
+    """get places depending on the state, cities
+    and amenities passed as JSON"""
     filtr = request.get_json()
     places = []
-    if type(filtr) != dict:
+    if not isinstance(filtr, dict):
         return "Not a JSON\n", 400
 
-    if len(filtr) == 0 or ((filtr.get('states') is None or len(filtr.get('states')) == 0) and (filtr.get('cities') is None or len(filtr.get('cities')) == 0)):
+    if len(filtr) == 0 or (
+        (filtr.get('states') is None or len(
+            filtr.get('states')) == 0) and (
+            filtr.get('cities') is None or len(
+                filtr.get('cities')) == 0)):
         places = [place for place in storage.all("Place").values()]
     else:
         states = [state for state in filtr.get('states', [])]
