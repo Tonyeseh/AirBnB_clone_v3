@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""defines the routes status and stats"""
 from flask import jsonify
 from api.v1.views import app_views
 
