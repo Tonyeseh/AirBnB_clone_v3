@@ -4,6 +4,7 @@ from api.v1.views import app_views
 from models import storage
 from models.city import City
 from models.place import Place
+from models.state import State
 from models.user import User
 from flask import abort, jsonify, request
 
@@ -55,3 +56,39 @@ def get_place(place_id):
                 setattr(place, k, v)
         place.save()
         return jsonify(place.to_dict())
+
+
+def get_places(states, cities):
+    """gets places from the id of states and cities"""
+    places = []
+    for state_id in states:
+        state = storage.get(State, state_id)
+        if state is not None:
+            for city in state.cities:
+                cities.append(city.id)
+    for city_id in cities:
+        city = storage.get(City, city_id)
+        if city is not None:
+            for place in city.places:
+                places.append(place)
+    return places
+
+
+@app_views.route('/places_search', methods=['POST'])
+def places_search():
+    """get places depending on the state, cities and amenities passed as JSON"""
+    filtr = request.get_json()
+    places = []
+    if type(filtr) != dict:
+        return "Not a JSON\n", 400
+
+    if len(filtr) == 0 or len(filtr.get('states')) == 0 and len(filtr.get('cities')) == 0:
+        places = [place.to_dict() for place in storage.all("Place").values()]
+        return jsonify(places)
+    states = [state for state in filtr.get('states', [])]
+    cities = [city for city in filtr.get('cities', [])]
+    places = get_places(states, cities)
+    print(len(places))
+    places = [place.to_dict() for place in places]
+
+    return jsonify(places)
