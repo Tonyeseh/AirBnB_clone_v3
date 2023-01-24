@@ -11,6 +11,7 @@ cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views, url_prefix='/api/v1')
 
+
 @app.teardown_appcontext
 def teardown(self):
     """
@@ -18,10 +19,12 @@ def teardown(self):
     """
     storage.close()
 
+
 @app.errorhandler(404)
 def error_404(err):
     """handles 404 errors"""
     return jsonify({"error": "Not found"}), 404
+
 
 if __name__ == '__main__':
     host = '0.0.0.0'

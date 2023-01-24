@@ -5,11 +5,14 @@ from models import storage
 from models.amenity import Amenity
 from flask import abort, jsonify, request
 
+
 @app_views.route('/amenities', methods=['GET', 'POST'])
 def amenities():
     """gets and adds amenities to the storage"""
     if request.method == 'GET':
-        amenities = [amenity.to_dict() for amenity in storage.all('Amenity').values()]
+        amenities = [
+            amenity.to_dict() for amenity in storage.all('Amenity').values()
+            ]
         return jsonify(amenities)
     if request.method == 'POST':
         amenity_dict = request.get_json()

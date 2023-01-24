@@ -6,6 +6,7 @@ from models.city import City
 from models.place import Place
 from flask import abort, jsonify, request
 
+
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'DELETE'])
 def places(city_id):
     """defines route to add and display all places"""
@@ -28,6 +29,8 @@ def places(city_id):
         new_place = Place(**place_dict)
         new_place.save()
         return jsonify(new_place.to_dict()), 201
+
+
 @app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_place(place_id):
     """displays, delete and updates a specific place object"""
