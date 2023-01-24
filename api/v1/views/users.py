@@ -23,7 +23,7 @@ def users():
             return "Missing password\n", 400
         user = User(**user_dict)
         user.save()
-        return jsonify(user.to_dict())
+        return jsonify(user.to_dict()), 201
 
 
 @app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'])
