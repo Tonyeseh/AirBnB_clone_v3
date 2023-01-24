@@ -11,6 +11,8 @@ from flask import abort, jsonify, request
 def places(city_id):
     """defines route to add and display all places"""
     city = storage.get(City, city_id)
+    if city is None:
+        abort(404)
     if request.method == 'GET':
         places = [place.to_dict() for place in city.places]
         return jsonify(places)
