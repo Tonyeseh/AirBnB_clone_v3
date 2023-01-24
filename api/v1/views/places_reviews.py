@@ -7,10 +7,12 @@ from models.place import Place
 from flask import abort, jsonify, request
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET', 'DELETE'])
+@app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'])
 def reviews(place_id):
     """defines route to add and display all reviews"""
     place = storage.get(Place, place_id)
+    if place is None:
+        abort(404)
     if request.method == 'GET':
         reviews = [review.to_dict() for review in place.reviews]
         return jsonify(reviews)
