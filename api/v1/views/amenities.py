@@ -22,7 +22,7 @@ def amenities():
             return "Missing name\n", 400
         amenity = Amenity(**amenity_dict)
         amenity.save()
-        return jsonify(amenity.to_dict())
+        return jsonify(amenity.to_dict()), 201
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
 def get_amenity(amenity_id):
