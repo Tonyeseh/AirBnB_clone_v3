@@ -4,6 +4,7 @@ from api.v1.views import app_views
 from models import storage
 from models.review import Review
 from models.place import Place
+from models.user import User
 from flask import abort, jsonify, request
 
 
@@ -28,7 +29,7 @@ def reviews(place_id):
         if 'text' not in review_dict.keys():
             return "Missing text", 400
         review_dict['place_id'] = place_id
-        new_review = Place(**review_dict)
+        new_review = Review(**review_dict)
         new_review.save()
         return jsonify(new_review.to_dict()), 201
 
