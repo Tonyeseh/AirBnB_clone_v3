@@ -82,12 +82,25 @@ def places_search():
     if type(filtr) != dict:
         return "Not a JSON\n", 400
 
-    if len(filtr) == 0 or (filtr.get('states') is None or len(filtr.get('states')) == 0) and (len(filtr.get('cities')) == 0):
-        places = [place.to_dict() for place in storage.all("Place").values()]
-        return jsonify(places)
-    states = [state for state in filtr.get('states', [])]
-    cities = [city for city in filtr.get('cities', [])]
-    places = get_places(states, cities)
+    if len(filtr) == 0 or ((filtr.get('states') is None or len(filtr.get('states')) == 0) and (filtr.get('cities') is None or len(filtr.get('cities')) == 0)):
+        places = [place for place in storage.all("Place").values()]
+    else:
+        states = [state for state in filtr.get('states', [])]
+        cities = [city for city in filtr.get('cities', [])]
+        places = get_places(states, cities)
+
+    amenities_id = filtr.get('amenities')
+    if amenities_id is not None:
+        if len(amenities_id) > 0:
+            new_place_list = []
+            for place in places:
+                place_amenity = []
+                for amenity in place.amenities:
+                    place_amenity.append(amenity.id)
+                if all(x in place_amenity for x in amenities_id):
+                    new_place_list.append(place.id)
+            storage.close()
+            places = [storage.get(Place, place) for place in new_place_list]
     places = [place.to_dict() for place in places]
 
     return jsonify(places)
